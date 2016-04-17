@@ -1,0 +1,173 @@
+<html>
+<body>
+
+<b>fastFVA</b> is an efficient implementation of flux variability analysis (FVA)
+for Matlab optimized for the GLPK and CPLEX solvers.
+Compared to a direct implementation of FVA in Matlab, fastFVA results in speedup
+ranging from 30 to 220 times faster for GLPK and from 20 to 120 times faster for CPLEX (avilable at no cost to researchers through IBM's <a href="http://www-03.ibm.com/ibm/university/academic/pub/page/software">Academic Initiative</a>).<br>
+
+<br>
+<b>Downloads</b><br>
+<a href="code.zip">[Code]</a> Source code and precompiled 32- and 64-bit binaries for Microsoft Windows and GLPK 4.47 / CPLEX 12.5.<br>
+<a href="data.zip">[Data]</a> Data sets used in the experiments.<br>
+   
+<p>
+If you use fastFVA in your work, please cite
+</p>
+
+<p>
+S. Gudmundsson and I. Thiele. Computationally efficient flux variability analysis,
+BMC Bioinformatics, 2010, 11:489. [<a href="http://www.biomedcentral.com/1471-2105/11/489">Link</a>]
+</p>
+
+<p>
+<b>Installation</b><br><br>
+
+<u>Windows</u><br>
+<p>
+You need to download <a href="http://sourceforge.net/projects/winglpk/">GLPK 4.47.1</a>
+and place <tt>glpk_4_47.dll</tt> in the same directory as fastFVA. The CPLEX version
+requires <tt>cplex125.dll</tt> to be in the system path (or in the same directory as fastFVA).
+</p>
+
+<p>
+To use fastFVA with other version of GLPK/CPLEX you need to install a C++ compiler
+(Microsoft Visual Studio Express is available free of charge, see the Mathworks homepage
+for more information on compiler options). After configuring the compiler you need
+to recompile the C/C++ files as follows:</p>
+
+Assuming GLPK has been installed in C:\glpk-4.47<br>
+
+Win64:
+<tt>mex -largeArrayDims -IC:\glpk-4.47\src glpkFVAcc.cpp C:\glpk-4.47\w64\glpk_4_47.lib</tt><br>
+Win32:
+<tt>mex -IC:\glpk-4.47\src\ glpkFVAcc.cpp C:\glpk-4.47\w32\glpk_4_47.lib</tt>
+
+<br><br>
+Assuming CPLEX has been installed in the default path<br>
+
+Win32 and Visual Studio 2008:
+<tt>mex -I"C:\Program Files\IBM\ILOG\CPLEX_Studio125\cplex\include\ilcplex" cplexFVAc.c "C:\Program Files\IBM\ILOG\CPLEX_Studio125\cplex\lib\x86_windows_vs2008\stat_mda\cplex125.lib" "C:\Program Files\IBM\ILOG\CPLEX_Studio125\cplex\lib\x86_windows_vs2008\stat_mda\ilocplex.lib"</tt>
+<br>
+Win64 and Visual Studio 2010:
+<tt>mex -largeArrayDims -I"C:\Program Files\IBM\ILOG\CPLEX_Studio125\cplex\include\ilcplex" cplexFVAc.c "C:\Program Files\IBM\ILOG\CPLEX_Studio125\cplex\lib\x64_windows_vs2010\stat_mda\cplex125.lib" "C:\Program Files\IBM\ILOG\CPLEX_Studio125\cplex\lib\x64_windows_vs2010\stat_mda\ilocplex.lib"</tt>
+<br><br>
+
+<u>Linux and Mac OS</u><br>
+<p>
+In case GLPK is not already installed you can obtain the latest version from <a href="http://www.gnu.org/software/glpk/">here</a>.
+</p>
+64-bit:<br>
+<tt>mex -largeArrayDims glpkFVAcc.cpp -lglpk -lm</tt><br>
+32-bit:<br>
+<tt>mex glpkFVAcc.cpp -lglpk -lm</tt><br>
+   <br>
+
+Assuming 64-bit CPLEX has been installed in <tt>/home/common/Software/</tt>, the following should work (NB has not been tested)<br>
+<tt>
+   mex -largeArrayDims
+   -I/home/common/Software/ILOG_CPLEX/cplex125/include/ilcplex cplexFVAc.c
+   -L/home/common/Software/ILOG_CPLEX/cplex125/lib/x86-64_debian4.0_4.1/static_pic/
+   -lcplex
+</tt>
+
+   <p>
+<b>Usage</b><br>
+The main code is written in C/C++ and is called via the Matlab function <tt>fastFVA</tt>.
+If the Parallel toolbox is installed fastFVA makes use of it for further speedup.
+You can either use the <tt>matlabpool</tt> command directly to specify
+the number of cores/CPUs or use the <tt>SetWorkerCount</tt> helper function.
+</p>
+
+<p>
+Assuming that the variable <tt>model</tt> contains the model of interest,
+<tt>[minFlux, maxFlux]=fastFVA(model, 90)</tt> returns vectors containing the minimum
+and maximum flux values for each reaction, with the additional constraint that at least
+90% of the cellular objective (e.g. biomass) is acheived.
+<p>
+Another example of how to use fastFVA is given in the file <tt>example_fva.m</tt>. The
+network has 6 internal reactions (v1, v2, ..., v6) and 3 exchange reactions
+(b1,b2 and b3). The following flux values are obtained with optPercentage=100.
+</p>
+
+Flux ranges for the "wild-type" network
+<pre>
+	[min,     max]
+v1	10.00	10.00
+v2	 0.00	 5.00
+v3	 0.00	 5.00
+v4	 0.00	 5.00
+v5	 0.00	 5.00
+v6	 0.00	 5.00
+b1	10.00	10.00
+b2	 5.00	 5.00
+b3	 5.00	 5.00
+</pre>
+
+Flux ranges for a mutant with reaction v6 knocked out
+<pre>
+	[min,     max]
+v1	10.00	10.00
+v2	 0.00	 5.00
+v3	 0.00	 5.00
+v4	 5.00	 5.00
+v5	 0.00	 5.00
+v6	 0.00	 0.00
+b1	10.00	10.00
+b2	 5.00	 5.00
+b3	 5.00	 5.00
+</pre>
+
+i.e. for the mutant, FVA reveals that reaction v6 is blocked (min=max=0) and
+that the flux in reaction v4 must be equal to 5 (min=max=5) in order to
+achieve optimum growth. Type <tt>help fastFVA</tt> for more details.
+<p>
+The file data.zip contains all the models used in the experiments in the paper. Unzip and
+update the "dataDir" variable in run_exps.m to point to the corresponding
+directory.
+</p>
+
+<p>
+<b>Troubleshooting</b>
+<br>
+
+If you get an error similar to
+<tt>
+??? Invalid MEX-file 'C:\pubs\fastFVA\release\glpkFVAcc.mexw64': The specified module could not be found.
+</tt><br>
+when using the GLPK version, make sure that glpk_4_47.dll is located in the same directory as fastFVA
+and that this file corresponds to version 4.47.1 of GLPK.
+
+CPLEX: If you get a similar error to the one above, make sure that cplex125.dll is in the system path.
+
+<p>
+<b>Known issues</b>
+<br>
+<li>fastFVA did not work properly with versions 12.2 and 12.3 of CPLEX, the running times became very long when the code was run repeatedly. The problem magically disappeared in version 12.4 of
+CPLEX and the issue was not pursued any further.
+<li>fastFVA does not work with CPLEX 12.5.1. This will be fixed once it becomes available through the Academic Initiative.
+
+
+<p>
+<b>Files</b>
+<br>
+The following files are supplied<br>
+<pre>
+   fastFVA.html		This file
+   fastFVA.m		Matlab wrapper for the mex functions
+   run_exps.m		Performs the experiments described in the paper
+   example_fva.m	Flux variability analysis of a simple network
+   SetWorkerCount.m	Helper function for the parallel version of fastFVA
+   GetWorkerCount.m	Helper function for the parallel version of fastFVA
+   cplexFVAc.c		Source code for the CPLEX version of fastFVA
+   glpkFVAcc.cpp	Source code for the GLPK version of fastFVA
+   glpkFVAcc.mexw32	32-bit Windows version, built with GLPK-4.47.1, Matlab 2009b and Windows XP
+   glpkFVAcc.mexw64	64-bit Windows version, built with GLPK-4.47.1, Matlab 2010a, Visual Studio 2010 and Windows 7
+   cplexFVAc.mexw32	32-bit Windows version, built with CPLEX 12.4, Matlab 2009b and Windows XP
+   cplexFVAc.mexw64	64-bit Windows version, built with CPLEX 12.5, Matlab 2010a, Visual Studio 2010 and Windows 7
+</pre>
+   Please report problems to steinng@hi.is<br><br>
+
+   Last updated 15.8.2013.
+</body>
+</html>

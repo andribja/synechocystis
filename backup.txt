@@ -1,0 +1,46 @@
+%{
+            wModel.c = zeroC; % Initialize objective vector
+            altModel.c = zeroC; 
+            % set objective to sum of fluxes of rxns i and j
+            wModel.c(i) = 1;
+            wModel.c(j) = 1;
+            altModel.c(i) = 1;
+            altModel.c(j) = 1;
+            % get upper/lower bounds for each rxn for wild/alt
+            wMax2 = optimizeCbModel(wModel);
+            wMax2 = wMax2.f;
+            altMax2 = optimizeCbModel(altModel);
+            altMax2 = altMax2.f;
+            wMin2 = optimizeCbModel(wModel, 'min');
+            wMin2 = wMin2.f;
+            altMin2 = optimizeCbModel(altModel, 'min');
+            altMin2 = altMin2.f;
+%}
+ 
+ %{
+            %set objective to difference of rxn i/j fluxes
+            wModel.c(j) = -1;
+            altModel.c(j) = -1;
+            wMax3 = optimizeCbModel(wModel);
+            wMax3 = wMax3.f;
+            altMax3 = optimizeCbModel(altModel);
+            altMax3 = altMax3.f;
+            wMin3 = optimizeCbModel(wModel, 'min');
+            wMin3 = wMin3.f;
+            altMin3 = optimizeCbModel(altModel, 'min');
+            altMin3 = altMin3.f;
+            %{if (wMin3 > altMax3)
+                fprintf('mustLU: %s, %s\n', model.rxns{i}, model.rxns{j});
+                mustLU = [mustLU i];
+                bitmap(i) = -3;
+                count = count + 1;
+            end
+            if(wMax3 < altMin3)
+                fprintf('mustUL: %s, %s\n', model.rxns{i}, model.rxns{j});
+                mustUL = [mustUL i];
+                count = count + 1;
+                bitmap(i = 3);
+            end
+            %}
+            %}
+ 

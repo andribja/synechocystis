@@ -1,0 +1,122 @@
+>> [mustU, mustL, mustUU, mustLL, mustUL, mustLU] = optForce(model, 'EX_pyr(e)', 8)
+mustL: ACONTa
+mustL: ACONTb
+mustL: AKGDH
+mustL: ATPS4r
+mustL: Biomass_Ecoli_core_N(w/GAM)-Nmet2
+mustU: CO2t
+mustL: CS
+mustL: CYTBD
+mustU: ENO
+mustL: EX_co2(e)
+mustL: EX_h2o(e)
+mustU: EX_h(e)
+mustU: EX_nh4(e)
+mustU: EX_o2(e)
+mustU: EX_pi(e)
+mustU: EX_pyr(e)
+mustU: FBA
+mustL: FUM
+mustL: G6PDH2r
+mustU: GAPD
+mustL: GLNS
+mustU: GLUDy
+mustL: GND
+mustU: H2Ot
+mustL: ICDHyr
+mustL: MDH
+mustL: NADH16
+mustL: NH4t
+mustL: O2t
+mustL: PDH
+mustU: PFK
+mustU: PGI
+mustL: PGK
+mustL: PGL
+mustL: PGM
+mustL: PIt2r
+mustL: PPC
+mustU: PYK
+mustL: PYRt2r
+mustL: RPE
+mustU: RPI
+mustU: SUCOAS
+mustL: TALA
+mustL: TKT1
+mustL: TKT2
+mustU: TPI
+    46
+
+
+mustU =
+
+    14
+    18
+    32
+    35
+    36
+    37
+    38
+    40
+    49
+    53
+    58
+    72
+    74
+    83
+    86
+    90
+    95
+
+
+mustL =
+
+     4
+     5
+     8
+    12
+    13
+    15
+    16
+    23
+    31
+    46
+    48
+    51
+    57
+    59
+    64
+    67
+    69
+    70
+    71
+    75
+    76
+    77
+    78
+    79
+    84
+    85
+    91
+    93
+    94
+
+
+mustUU =
+
+     []
+
+
+mustLL =
+
+     []
+
+
+mustUL =
+
+     []
+
+
+mustLU =
+
+     []

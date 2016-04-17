@@ -1,0 +1,19 @@
+fluxvariability 90%
+wildtype
+
+
+altype
+setja lb a biomass a 10%
+
+
+velja i,j af handahofi 10% af 
+
+model.subsystems // label sem fylgir ollum hvorfum
+velja td 5 subsystem?
+
+parfor?
+
+mex -setup // listi yfir compilera
+
+
+graphviz til ad bua til net

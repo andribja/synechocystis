@@ -1,0 +1,17 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=mex 2016.1.7)  14 APR 2016 14:49
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**glpkFVAcc.cpp -lglpk -lm
+(./glpkFVAcc.cpp
+This is MeX  Version 1.05  18 XII 1993  (B. Jackowski & M. Ry\'cko)
+! You can't use `macro parameter character #' in vertical mode.
+l.3 #
+     include <stdio.h>
+? 
+! Emergency stop.
+l.3 #
+     include <stdio.h>
+End of file on the terminal!
+
+No pages of output.
